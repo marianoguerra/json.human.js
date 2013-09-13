@@ -14,7 +14,22 @@
         <p class="project-description">Provide JSON and get a DOM node with
         a human representation of that JSON.</p>
 
-        <p>Try it! edit the JSON and click <em>Convert</em></p>
+
+        <h2>Why?</h2>
+
+        <p>At <a href="http://event-fabric.com">Event Fabric</a> we need to display JSON to people from all technical levels without being to technical but also without loosing information about the underlying JSON object.</p>
+
+        <h2>How?</h2>
+
+        <p>you can see <a href="https://github.com/marianoguerra/json.human.js/blob/master/js/demo.js">js/demo.js</a> in the <a href="http://github.com/marianoguerra/json.human.js">repo</a> for an example, here is a short one</p>
+
+        <pre>
+        var node = JsonHuman.format(input);
+        output.appendChild(node);
+        </pre>
+
+        <h2>Try it</h2>
+        <p>edit the JSON and click <em>Convert</em></p>
 
         <h2>Input: JSON</h2>
 
@@ -56,6 +71,11 @@
 
         <div id="output">
         </div>
+
+        <h2>License?</h2>
+
+        <p><a href="http://opensource.org/licenses/MIT">MIT</a></p>
+
 
         <script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.16.0/codemirror.min.js"></script>
         <script src="http://cdnjs.cloudflare.com/ajax/libs/codemirror/3.16.0/mode/javascript/javascript.min.js" data-main="js/demo"></script>

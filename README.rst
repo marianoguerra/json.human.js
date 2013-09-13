@@ -21,10 +21,9 @@ you can see js/demo.js in this repo for an example or use it live at the `projec
 ::
 
     var node = JsonHuman.format(input);
-
     output.appendChild(node);
 
 License?
 --------
 
-MIT
+`MIT <http://opensource.org/licenses/MIT>`_
