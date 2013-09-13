@@ -11,7 +11,7 @@ Mariano Guerra
 Why?
 ----
 
-At `Event Fabric <http://event-fabric.com/>`_ we need to display JSON to people from all technical levels without being to technical but also without loosing information about the underlying JSON object.
+At `Event Fabric <http://event-fabric.com/>`_ we need to display JSON to people from all technical levels without being to technical but also without losing information about the underlying JSON object.
 
 How?
 ----
