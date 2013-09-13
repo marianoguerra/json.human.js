@@ -61,7 +61,7 @@ define(['crel'], function (crel) {
         case OBJECT:
             result = crel("table", {"class": p("type-object")});
             for (key in data) {
-                keyNode = crel("td", {"class": p("key") + " " + p("object-key")}, "" + key);
+                keyNode = crel("th", {"class": p("key") + " " + p("object-key")}, "" + key);
                 valNode = crel("td", {"class": p("value") + " " + p("object-value")}, _format(data[key], p));
                 result.appendChild(crel("tr", keyNode, valNode));
             }
@@ -72,7 +72,7 @@ define(['crel'], function (crel) {
         case ARRAY:
             result = crel("table", {"class": p("type-array")});
             for (key = 0; key < data.length; key += 1) {
-                keyNode = crel("td", {"class": p("key") + " " + p("array-key")}, "" + key);
+                keyNode = crel("th", {"class": p("key") + " " + p("array-key")}, "" + key);
                 valNode = crel("td", {"class": p("value") + " " + p("array-value")}, _format(data[key], p));
                 result.appendChild(crel("tr", keyNode, valNode));
             }
