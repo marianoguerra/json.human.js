@@ -24,7 +24,7 @@ require(["../src/json.human"], function (JsonHuman) {
     function doConvert() {
         var json;
         try {
-            json = JSON.parse(textarea.value);
+            json = JSON.parse(editor.getValue());
         } catch (error) {
             alert("Error parsing json");
             return;
