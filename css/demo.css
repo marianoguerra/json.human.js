@@ -46,3 +46,7 @@ button:hover, button:focus, button:active{
  background-color: rgb(50, 118, 177);
  border-color: rgb(40, 94, 142);
 }
+
+.CodeMirror{
+ border: 1px solid #ddd;
+}

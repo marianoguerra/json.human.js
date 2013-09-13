@@ -8,6 +8,7 @@ require(["../src/json.human"], function (JsonHuman) {
     "use strict";
     var textarea = document.getElementById("input"),
         output = document.getElementById("output"),
+        raw = document.getElementById("output-raw"),
         button = document.getElementById("convert"),
         editor = CodeMirror.fromTextArea(textarea, {
             mode: "application/json",
@@ -19,6 +20,7 @@ require(["../src/json.human"], function (JsonHuman) {
 
         output.innerHTML = "";
         output.appendChild(node);
+        raw.textContent = output.innerHTML;
     }
 
     function doConvert() {
