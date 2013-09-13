@@ -23,6 +23,11 @@ you can see js/demo.js in this repo for an example or use it live at the `projec
     var node = JsonHuman.format(input);
     output.appendChild(node);
 
+Alternatives
+------------
+
+* prettyprint.js: https://github.com/padolsey/prettyPrint.js
+
 License?
 --------
 
