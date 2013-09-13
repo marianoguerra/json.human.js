@@ -53,6 +53,10 @@
  margin: 0.2em;
 }
 
+th.jh-key{
+ text-align: left;
+}
+
 .jh-type-object > tr, .jh-type-array > tr{
  border: 1px solid #ddd;
  border-bottom: none;
