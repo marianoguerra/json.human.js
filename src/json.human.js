@@ -39,6 +39,7 @@ define(['crel'], function (crel) {
 
     function _format(data, prefixer) {
         var result, container, key, keyNode, valNode,
+            isEmpty = true,
             p = prefixer,
             accum = [],
             type = getType(data);
@@ -48,13 +49,19 @@ define(['crel'], function (crel) {
             result = crel("span", {"class": p("type-bool")}, "" + data);
             break;
         case STRING:
-            result = crel("span", {"class": p("type-string")}, "");
-            result.innerHTML = data
-                .replace(/&/g, '&amp;')
-                .replace(/ /g, "&nbsp;")
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;');
+            if (data !== "") {
+                result = crel("span", {"class": p("type-string")}, "");
+                result.innerHTML = data
+                    .replace(/&/g, '&amp;')
+                    .replace(/ /g, "&nbsp;")
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;');
+            } else {
+                result = crel("span",
+                         {"class": p("type-string") + " " + p("empty")},
+                         "(Empty Text)");
+            }
             break;
         case INT:
             result = crel("span",
@@ -69,6 +76,7 @@ define(['crel'], function (crel) {
         case OBJECT:
             result = crel("table", {"class": p("type-object")});
             for (key in data) {
+                isEmpty = false;
                 keyNode = crel("th",
                          {"class": p("key") + " " + p("object-key")},
                          "" + key);
@@ -77,20 +85,32 @@ define(['crel'], function (crel) {
                          _format(data[key], p));
                 result.appendChild(crel("tr", keyNode, valNode));
             }
+
+            if (isEmpty) {
+                result = crel("span",
+                         {"class": p("type-object") + " " + p("empty")},
+                         "(Empty Object)");
+            }
             break;
         case FUNCTION:
             result = crel("span", {"class": p("type-function")}, "" + data);
             break;
         case ARRAY:
-            result = crel("table", {"class": p("type-array")});
-            for (key = 0; key < data.length; key += 1) {
-                keyNode = crel("th",
-                         {"class": p("key") + " " + p("array-key")},
-                         "" + key);
-                valNode = crel("td",
-                         {"class": p("value") + " " + p("array-value")},
-                         _format(data[key], p));
-                result.appendChild(crel("tr", keyNode, valNode));
+            if (data.length > 0) {
+                result = crel("table", {"class": p("type-array")});
+                for (key = 0; key < data.length; key += 1) {
+                    keyNode = crel("th",
+                             {"class": p("key") + " " + p("array-key")},
+                             "" + key);
+                    valNode = crel("td",
+                             {"class": p("value") + " " + p("array-value")},
+                             _format(data[key], p));
+                    result.appendChild(crel("tr", keyNode, valNode));
+                }
+            } else {
+                result = crel("span",
+                         {"class": p("type-array") + " " + p("empty")},
+                         "(Empty List)");
             }
             break;
         default:

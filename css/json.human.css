@@ -69,3 +69,9 @@ th.jh-key{
 .jh-type-object > tr:hover, .jh-type-array > tr:hover{
  border: 1px solid #F99927;
 }
+
+.jh-empty{
+ font-style: italic;
+ color: #999;
+ font-size: small;
+}
