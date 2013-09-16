@@ -57,17 +57,24 @@ define(['crel'], function (crel) {
                 .replace(/"/g, '&quot;');
             break;
         case INT:
-            result = crel("span", {"class": p("type-int") + " " + p("type-number")},
+            result = crel("span",
+                         {"class": p("type-int") + " " + p("type-number")},
                           "" + data);
             break;
         case FLOAT:
-            result = crel("span", {"class": p("type-float") + " " + p("type-number")}, "" + data);
+            result = crel("span",
+                         {"class": p("type-float") + " " + p("type-number")},
+                         "" + data);
             break;
         case OBJECT:
             result = crel("table", {"class": p("type-object")});
             for (key in data) {
-                keyNode = crel("th", {"class": p("key") + " " + p("object-key")}, "" + key);
-                valNode = crel("td", {"class": p("value") + " " + p("object-value")}, _format(data[key], p));
+                keyNode = crel("th",
+                         {"class": p("key") + " " + p("object-key")},
+                         "" + key);
+                valNode = crel("td",
+                         {"class": p("value") + " " + p("object-value")},
+                         _format(data[key], p));
                 result.appendChild(crel("tr", keyNode, valNode));
             }
             break;
@@ -77,8 +84,12 @@ define(['crel'], function (crel) {
         case ARRAY:
             result = crel("table", {"class": p("type-array")});
             for (key = 0; key < data.length; key += 1) {
-                keyNode = crel("th", {"class": p("key") + " " + p("array-key")}, "" + key);
-                valNode = crel("td", {"class": p("value") + " " + p("array-value")}, _format(data[key], p));
+                keyNode = crel("th",
+                         {"class": p("key") + " " + p("array-key")},
+                         "" + key);
+                valNode = crel("td",
+                         {"class": p("value") + " " + p("array-value")},
+                         _format(data[key], p));
                 result.appendChild(crel("tr", keyNode, valNode));
             }
             break;
