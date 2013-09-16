@@ -28,7 +28,7 @@ require(["../src/json.human"], function (JsonHuman) {
         try {
             json = JSON.parse(editor.getValue());
         } catch (error) {
-            alert("Error parsing json");
+            alert("Error parsing json:\n" + error.stack);
             return;
         }
 
