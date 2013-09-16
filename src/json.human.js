@@ -48,8 +48,7 @@ define(['crel'], function (crel) {
             result = crel("span", {"class": p("type-bool")}, "" + data);
             break;
         case STRING:
-            result = crel("span", {"class": p("type-string")},
-                          JSON.stringify(data));
+            result = crel("span", {"class": p("type-string")}, data);
             break;
         case INT:
             result = crel("span", {"class": p("type-int") + " " + p("type-number")},
