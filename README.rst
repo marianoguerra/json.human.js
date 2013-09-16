@@ -23,6 +23,14 @@ you can see js/demo.js in this repo for an example or use it live at the `projec
     var node = JsonHuman.format(input);
     output.appendChild(node);
 
+
+To install it, if you're using `Bower <https://github.com/bower/bower>`_ you can just run :
+
+::
+
+    bower install json-human --save
+
+
 Alternatives
 ------------
 
