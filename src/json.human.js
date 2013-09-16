@@ -48,7 +48,13 @@ define(['crel'], function (crel) {
             result = crel("span", {"class": p("type-bool")}, "" + data);
             break;
         case STRING:
-            result = crel("span", {"class": p("type-string")}, data);
+            result = crel("span", {"class": p("type-string")}, "");
+            result.innerHTML = data
+                .replace(/&/g, '&amp;')
+                .replace(/ /g, "&nbsp;")
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
             break;
         case INT:
             result = crel("span", {"class": p("type-int") + " " + p("type-number")},
