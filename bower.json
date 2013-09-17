@@ -1,0 +1,7 @@
+{
+    "name": "json-human",
+    "version": "1.0.0",
+    "main": "./src/json.human.js",
+    "dependencies": {
+    }
+}
