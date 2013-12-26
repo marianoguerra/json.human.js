@@ -63,7 +63,8 @@
                     .replace(/ /g, "&nbsp;")
                     .replace(/</g, '&lt;')
                     .replace(/>/g, '&gt;')
-                    .replace(/"/g, '&quot;');
+                    .replace(/[\r\n]/g, '<br/>')
+                    .replace(/"/g, '&quot;'); // ")
             } else {
                 result = crel("span",
                          {"class": p("type-string") + " " + p("empty")},
