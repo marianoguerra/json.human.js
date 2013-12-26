@@ -1,5 +1,12 @@
 /*globals define*/
-define(['crel'], function (crel) {
+(function (root, factory) {
+    "use strict";
+    if (typeof define === 'function' && define.amd) {
+        define(['crel'], factory);
+    } else {
+        root.JsonHuman = factory(root.crel);
+    }
+}(this, function (crel) {
     "use strict";
     var toString = Object.prototype.toString,
         ARRAY = 1,
@@ -136,4 +143,4 @@ define(['crel'], function (crel) {
     return {
         format: format
     };
-});
+}));
