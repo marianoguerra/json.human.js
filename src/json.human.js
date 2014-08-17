@@ -3,6 +3,8 @@
     "use strict";
     if (typeof define === 'function' && define.amd) {
         define(['crel'], factory);
+    } else if (typeof module !== 'undefined' && module.exports) {
+		module.exports = factory(require('../lib/crel'));
     } else {
         root.JsonHuman = factory(root.crel);
     }

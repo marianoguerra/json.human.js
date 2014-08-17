@@ -1,0 +1,28 @@
+{
+  "name": "json-human",
+  "version": "1.0.0",
+  "description": "Convert JSON to human readable HTML",
+  "main": "src/json.human.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/marianoguerra/json.human.js"
+  },
+  "keywords": [
+    "json",
+    "html",
+    "human",
+    "readable"
+  ],
+  "author": "Mariano Guerra",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/marianoguerra/json.human.js/issues"
+  },
+  "homepage": "https://github.com/marianoguerra/json.human.js",
+  "dependencies": {
+    "jsdom": "^0.11.1"
+  }
+}
