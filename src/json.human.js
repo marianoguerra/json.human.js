@@ -47,7 +47,7 @@
     }
 
     function _format(data, prefixer) {
-        var result, container, key, keyNode, valNode,
+        var result, container, key, keyNode, valNode, len,
             isEmpty = true,
             p = prefixer,
             accum = [],
@@ -108,7 +108,7 @@
         case ARRAY:
             if (data.length > 0) {
                 result = crel("table", {"class": p("type-array")});
-                for (key = 0; key < data.length; key += 1) {
+                for (key = 0, len = data.length; key < len; key += 1) {
                     keyNode = crel("th",
                              {"class": p("key") + " " + p("array-key")},
                              "" + key);
