@@ -63,9 +63,6 @@
         INT_CLASS_NAME = p("type-int") + " " + p("type-number"),
         FLOAT_CLASS_NAME = p("type-float") + " " + p("type-number"),
 
-        INT_CLASS = {"class": INT_CLASS_NAME},
-        FLOAT_CLASS = {"class": FLOAT_CLASS_NAME},
-
         OBJECT_CLASS_NAME = p("type-object"),
 
         OBJ_KEY_CLASS_NAME = p("key") + " " + p("object-key"),
@@ -75,15 +72,12 @@
 
         FUNCTION_CLASS_NAME = p("type-function"),
         BOOL_CLASS = {"class": p("type-bool")},
-        STRING_CLASS = {"class": STRING_CLASS_NAME},
         STRING_EMPTY_CLASS = {"class": p("type-string") + " " + p("empty")},
 
         ARRAY_KEY_CLASS_NAME = p("key") + " " + p("array-key"),
         ARRAY_VAL_CLASS_NAME = p("value") + " " + p("array-value"),
 
         ARRAY_CLASS_NAME = p("type-array"),
-        ARRAY_KEY_CLASS = {"class": ARRAY_KEY_CLASS_NAME},
-        ARRAY_VAL_CLASS = {"class": ARRAY_VAL_CLASS_NAME},
         ARRAY_EMPTY_CLASS = {"class": p("type-array") + " " + p("empty")},
 
         UNKNOWN_CLASS_NAME = p("type-unk"),
