@@ -1,6 +1,6 @@
 {
   "name": "json-human",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Convert JSON to human readable HTML",
   "main": "src/json.human.js",
   "scripts": {
