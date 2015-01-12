@@ -81,7 +81,7 @@
         ARRAY_KEY_CLASS_NAME = p("key") + " " + p("array-key"),
         ARRAY_VAL_CLASS_NAME = p("value") + " " + p("array-value"),
 
-        ARRAY_CLASS = {"class": p("type-array")},
+        ARRAY_CLASS_NAME = p("type-array"),
         ARRAY_KEY_CLASS = {"class": ARRAY_KEY_CLASS_NAME},
         ARRAY_VAL_CLASS = {"class": ARRAY_VAL_CLASS_NAME},
         ARRAY_EMPTY_CLASS = {"class": p("type-array") + " " + p("empty")},
@@ -179,7 +179,7 @@
                     childs.push(tr);
                 }
 
-                result = scn("table", ARRAY_CLASS, childs);
+                result = scn("table", ARRAY_CLASS_NAME, childs);
             } else {
                 result = EMPTY_ARRAY;
             }
