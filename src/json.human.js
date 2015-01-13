@@ -60,34 +60,25 @@
         UNK = 99,
 
         STRING_CLASS_NAME = p("type-string"),
+        STRING_EMPTY_CLASS_NAME = p("type-string") + " " + p("empty"),
+
+        BOOL_CLASS_NAME = p("type-bool"),
         INT_CLASS_NAME = p("type-int") + " " + p("type-number"),
         FLOAT_CLASS_NAME = p("type-float") + " " + p("type-number"),
 
         OBJECT_CLASS_NAME = p("type-object"),
-
         OBJ_KEY_CLASS_NAME = p("key") + " " + p("object-key"),
         OBJ_VAL_CLASS_NAME = p("value") + " " + p("object-value"),
-
-        OBJ_EMPTY_CLASS = {"class": p("type-object") + " " + p("empty")},
+        OBJ_EMPTY_CLASS_NAME = p("type-object") + " " + p("empty"),
 
         FUNCTION_CLASS_NAME = p("type-function"),
-        BOOL_CLASS = {"class": p("type-bool")},
-        STRING_EMPTY_CLASS = {"class": p("type-string") + " " + p("empty")},
 
         ARRAY_KEY_CLASS_NAME = p("key") + " " + p("array-key"),
         ARRAY_VAL_CLASS_NAME = p("value") + " " + p("array-value"),
-
         ARRAY_CLASS_NAME = p("type-array"),
-        ARRAY_EMPTY_CLASS = {"class": p("type-array") + " " + p("empty")},
+        ARRAY_EMPTY_CLASS_NAME = p("type-array") + " " + p("empty"),
 
-        UNKNOWN_CLASS_NAME = p("type-unk"),
-
-        EMPTY_STRING = sn("span", STRING_EMPTY_CLASS, "(Empty Text)"),
-        EMPTY_OBJECT = sn("span", OBJ_EMPTY_CLASS, "(Empty Object)"),
-        EMPTY_ARRAY = sn("span", ARRAY_EMPTY_CLASS, "(Empty List)"),
-
-        TRUE = sn("span", BOOL_CLASS, "true"),
-        FALSE = sn("span", BOOL_CLASS, "false");
+        UNKNOWN_CLASS_NAME = p("type-unk");
 
     function getType(obj) {
         var type = typeof obj;
@@ -120,11 +111,12 @@
 
         switch (type) {
         case BOOL:
-            result = data ? TRUE : FALSE;
+            result = data ? sn("span", BOOL_CLASS_NAME, "true")
+                          : sn("span", BOOL_CLASS_NAME, "false");
             break;
         case STRING:
             if (data === "") {
-                result = EMPTY_STRING;
+                result = sn("span", STRING_EMPTY_CLASS_NAME, "(Empty Text)");
             } else {
                 result = sn("span", STRING_CLASS_NAME, data);
             }
@@ -151,7 +143,7 @@
             }
 
             if (isEmpty) {
-                result = EMPTY_OBJECT;
+                result = sn("span", OBJ_EMPTY_CLASS_NAME, "(Empty Object)");
             } else {
                 result = scn("table", OBJECT_CLASS_NAME, childs);
             }
@@ -175,7 +167,7 @@
 
                 result = scn("table", ARRAY_CLASS_NAME, childs);
             } else {
-                result = EMPTY_ARRAY;
+                result = sn("span", ARRAY_EMPTY_CLASS_NAME, "(Empty List)");
             }
             break;
         default:
