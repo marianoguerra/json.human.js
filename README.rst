@@ -31,6 +31,7 @@ you can see js/demo.js in this repo for an example or use it live at the
 Additional options parameter can be supplied
 
 ::
+
     var input = {
           "url" : [
                 "www.google.com",
