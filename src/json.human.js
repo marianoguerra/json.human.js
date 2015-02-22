@@ -47,6 +47,13 @@
         return result;
     }
 
+    function linkNode(child, href, target){
+        var a = scn("a", HYPERLINK_CLASS_NAME, child);
+        a.setAttribute('href', href);
+        a.setAttribute('target', target);
+        return a;
+    }
+
     var toString = Object.prototype.toString,
         prefixer = makePrefixer("jh"),
         p = prefixer,
@@ -78,6 +85,8 @@
         ARRAY_CLASS_NAME = p("type-array"),
         ARRAY_EMPTY_CLASS_NAME = p("type-array") + " " + p("empty"),
 
+        HYPERLINK_CLASS_NAME = p('a'),
+
         UNKNOWN_CLASS_NAME = p("type-unk");
 
     function getType(obj) {
@@ -103,11 +112,14 @@
         }
     }
 
-    function _format(data) {
+    function _format(data, options, parentKey) {
+
         var result, container, key, keyNode, valNode, len, childs, tr,
             isEmpty = true,
             accum = [],
             type = getType(data);
+
+        var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
         switch (type) {
         case BOOL:
@@ -132,8 +144,20 @@
             for (key in data) {
                 isEmpty = false;
 
+                valNode = _format(data[key], options, key);
                 keyNode = sn("th", OBJ_KEY_CLASS_NAME, key);
-                valNode = scn("td", OBJ_VAL_CLASS_NAME, _format(data[key]));
+
+                // Is Hyperlink Key
+                if( options.hyperlinks.enable &&
+                    options.hyperlinks.keys &&
+                    options.hyperlinks.keys.length > 0 &&
+                    typeof(data[key]) === 'string' &&
+                    indexOf.call(options.hyperlinks.keys, key) >= 0){
+
+                    valNode = scn("td", OBJ_VAL_CLASS_NAME, linkNode(valNode, data[key], options.hyperlinks.target));
+                } else {
+                    valNode = scn("td", OBJ_VAL_CLASS_NAME, valNode);
+                }
 
                 tr = document.createElement("tr");
                 tr.appendChild(keyNode);
@@ -154,12 +178,28 @@
         case ARRAY:
             if (data.length > 0) {
                 childs = [];
+
+                // Hyperlink of arrays?
+                var hyperlinks = parentKey && options.hyperlinks.enable &&
+                  options.hyperlinks.keys &&
+                  options.hyperlinks.keys.length > 0 &&
+                  indexOf.call(options.hyperlinks.keys, parentKey) >= 0;
+
                 for (key = 0, len = data.length; key < len; key += 1) {
+
                     keyNode = sn("th", ARRAY_KEY_CLASS_NAME, key);
-                    valNode = scn("td", ARRAY_VAL_CLASS_NAME, _format(data[key]));
+                    if(hyperlinks && typeof(data[key]) === "string") {
+                        valNode = _format(data[key], options, key);
+                        valNode = scn("td", ARRAY_VAL_CLASS_NAME, linkNode(valNode, data[key], options.hyperlinks.target));
+                    } else {
+                        valNode = scn("td", ARRAY_VAL_CLASS_NAME, _format(data[key], options, key));
+                    }
 
                     tr = document.createElement("tr");
-                    tr.appendChild(keyNode);
+
+                    if(options.showArrayIndex) {
+                        tr.appendChild(keyNode);
+                    }
                     tr.appendChild(valNode);
 
                     childs.push(tr);
@@ -179,13 +219,60 @@
     }
 
     function format(data, options) {
-        options = options || {};
+        options = validateOptions(options || {});
+
         var result;
 
-        result = _format(data);
+        result = _format(data, options);
         result.className = result.className + " " + prefixer("root");
 
         return result;
+    }
+
+
+    function validateOptions(options){
+        options = validateArrayIndexOption(options);
+        options = validateHyperlinkOptions(options);
+
+        // Add any more option validators here
+
+        return options;
+    }
+
+
+    function validateArrayIndexOption(options) {
+        if(options['showArrayIndex'] === undefined){
+            options.showArrayIndex = true;
+        } else {
+            // Force to boolean just in case
+            options.showArrayIndex = options.showArrayIndex ? true: false;
+        }
+
+        return options;
+    }
+
+    function validateHyperlinkOptions(options){
+        var hyperlinks = {
+            enable : false,
+            keys : null,
+            target : ''
+        };
+
+        if(options.hyperlinks && options.hyperlinks.enable) {
+            hyperlinks.enable = true;
+
+            hyperlinks.keys =  isArray(options.hyperlinks.keys) ? options.hyperlinks.keys : [];
+
+            if(options.hyperlinks.target) {
+                hyperlinks.target = '' + options.hyperlinks.target;
+            } else {
+                hyperlinks.target = '_blank';
+            }
+        }
+
+        options.hyperlinks = hyperlinks;
+
+        return options;
     }
 
     return {

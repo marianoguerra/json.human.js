@@ -11,7 +11,14 @@
         });
 
     function convert(input, output) {
-        var node = JsonHuman.format(input);
+        var node = JsonHuman.format(input, {
+            showArrayIndex: true,
+            hyperlinks : {
+                enable : true,
+                keys: ['url', 'main'],
+                target : '_blank'
+            }
+        });
 
         output.innerHTML = "";
         output.appendChild(node);
