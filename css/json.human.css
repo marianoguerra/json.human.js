@@ -75,3 +75,19 @@ th.jh-key{
  color: #999;
  font-size: small;
 }
+
+.jh-a {
+    text-decoration: none;
+}
+
+.jh-a:hover{
+    text-decoration: underline;
+}
+
+.jh-a span.jh-type-string {
+    text-decoration: none;
+    font-weight: bold;
+    color : #268ddd;
+    font-style: normal;
+}
+

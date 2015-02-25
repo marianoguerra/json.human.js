@@ -11,6 +11,8 @@
 }(this, function () {
     "use strict";
 
+    var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
     function makePrefixer(prefix) {
         return function (name) {
             return prefix + "-" + name;
@@ -47,6 +49,13 @@
         return result;
     }
 
+    function linkNode(child, href, target){
+        var a = scn("a", HYPERLINK_CLASS_NAME, child);
+        a.setAttribute('href', href);
+        a.setAttribute('target', target);
+        return a;
+    }
+
     var toString = Object.prototype.toString,
         prefixer = makePrefixer("jh"),
         p = prefixer,
@@ -78,6 +87,8 @@
         ARRAY_CLASS_NAME = p("type-array"),
         ARRAY_EMPTY_CLASS_NAME = p("type-array") + " " + p("empty"),
 
+        HYPERLINK_CLASS_NAME = p('a'),
+
         UNKNOWN_CLASS_NAME = p("type-unk");
 
     function getType(obj) {
@@ -103,11 +114,15 @@
         }
     }
 
-    function _format(data) {
-        var result, container, key, keyNode, valNode, len, childs, tr,
+    function _format(data, options, parentKey) {
+
+        var result, container, key, keyNode, valNode, len, childs, tr, value,
             isEmpty = true,
             accum = [],
             type = getType(data);
+
+        // Initialized & used only in case of objects & arrays
+        var hyperlinksEnabled, aTarget, hyperlinkKeys ;
 
         switch (type) {
         case BOOL:
@@ -129,11 +144,32 @@
             break;
         case OBJECT:
             childs = [];
+
+            aTarget =  options.hyperlinks.target;
+            hyperlinkKeys = options.hyperlinks.keys;
+
+            // Is Hyperlink Key
+            hyperlinksEnabled =
+                options.hyperlinks.enable &&
+                hyperlinkKeys &&
+                hyperlinkKeys.length > 0;
+
             for (key in data) {
                 isEmpty = false;
 
+                value = data[key];
+
+                valNode = _format(value, options, key);
                 keyNode = sn("th", OBJ_KEY_CLASS_NAME, key);
-                valNode = scn("td", OBJ_VAL_CLASS_NAME, _format(data[key]));
+
+                if( hyperlinksEnabled &&
+                    typeof(value) === 'string' &&
+                    indexOf.call(hyperlinkKeys, key) >= 0){
+
+                    valNode = scn("td", OBJ_VAL_CLASS_NAME, linkNode(valNode, value, aTarget));
+                } else {
+                    valNode = scn("td", OBJ_VAL_CLASS_NAME, valNode);
+                }
 
                 tr = document.createElement("tr");
                 tr.appendChild(keyNode);
@@ -154,12 +190,34 @@
         case ARRAY:
             if (data.length > 0) {
                 childs = [];
+                var showArrayIndices = options.showArrayIndex;
+
+                aTarget =  options.hyperlinks.target;
+                hyperlinkKeys = options.hyperlinks.keys;
+
+                // Hyperlink of arrays?
+                hyperlinksEnabled = parentKey && options.hyperlinks.enable &&
+                    hyperlinkKeys &&
+                    hyperlinkKeys.length > 0 &&
+                    indexOf.call(hyperlinkKeys, parentKey) >= 0;
+
                 for (key = 0, len = data.length; key < len; key += 1) {
+
                     keyNode = sn("th", ARRAY_KEY_CLASS_NAME, key);
-                    valNode = scn("td", ARRAY_VAL_CLASS_NAME, _format(data[key]));
+                    value = data[key];
+
+                    if(hyperlinksEnabled && typeof(value) === "string") {
+                        valNode = _format(value, options, key);
+                        valNode = scn("td", ARRAY_VAL_CLASS_NAME, linkNode(valNode, value, aTarget));
+                    } else {
+                        valNode = scn("td", ARRAY_VAL_CLASS_NAME, _format(value, options, key));
+                    }
 
                     tr = document.createElement("tr");
-                    tr.appendChild(keyNode);
+
+                    if(showArrayIndices) {
+                        tr.appendChild(keyNode);
+                    }
                     tr.appendChild(valNode);
 
                     childs.push(tr);
@@ -179,13 +237,60 @@
     }
 
     function format(data, options) {
-        options = options || {};
+        options = validateOptions(options || {});
+
         var result;
 
-        result = _format(data);
+        result = _format(data, options);
         result.className = result.className + " " + prefixer("root");
 
         return result;
+    }
+
+
+    function validateOptions(options){
+        options = validateArrayIndexOption(options);
+        options = validateHyperlinkOptions(options);
+
+        // Add any more option validators here
+
+        return options;
+    }
+
+
+    function validateArrayIndexOption(options) {
+        if(options.showArrayIndex === undefined){
+            options.showArrayIndex = true;
+        } else {
+            // Force to boolean just in case
+            options.showArrayIndex = options.showArrayIndex ? true: false;
+        }
+
+        return options;
+    }
+
+    function validateHyperlinkOptions(options){
+        var hyperlinks = {
+            enable : false,
+            keys : null,
+            target : ''
+        };
+
+        if(options.hyperlinks && options.hyperlinks.enable) {
+            hyperlinks.enable = true;
+
+            hyperlinks.keys =  isArray(options.hyperlinks.keys) ? options.hyperlinks.keys : [];
+
+            if(options.hyperlinks.target) {
+                hyperlinks.target = '' + options.hyperlinks.target;
+            } else {
+                hyperlinks.target = '_blank';
+            }
+        }
+
+        options.hyperlinks = hyperlinks;
+
+        return options;
     }
 
     return {

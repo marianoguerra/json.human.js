@@ -28,6 +28,36 @@ you can see js/demo.js in this repo for an example or use it live at the
     output.appendChild(node);
 
 
+Additional options parameter can be supplied
+
+::
+
+    var input = {
+          "url" : [
+                "www.google.com",
+                "www.google.com",
+                {
+                  "x" : "x-direction",
+                  "y" : "y-direction",
+                  "url" : "www.google.com"
+                }
+          ]
+    };
+
+    var node = JsonHuman.format(input, {
+        // Show or hide Array-Indices in the output
+        showArrayIndex: true,
+
+        // Hyperlinks Option
+        // Enable <a> tag in the output html based on object keys
+        // Supports only strings and arrays
+        hyperlinks : {
+            enable : true,
+            keys: ['url'],          // Keys which will be output as links
+            target : '_blank'       // 'target' attribute of a
+        }
+    });
+
 To install it, if you're using `Bower <https://github.com/bower/bower>`_ you
 can just run::
 
