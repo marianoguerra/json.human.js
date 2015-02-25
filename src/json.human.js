@@ -11,6 +11,8 @@
 }(this, function () {
     "use strict";
 
+    var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
     function makePrefixer(prefix) {
         return function (name) {
             return prefix + "-" + name;
@@ -114,12 +116,13 @@
 
     function _format(data, options, parentKey) {
 
-        var result, container, key, keyNode, valNode, len, childs, tr,
+        var result, container, key, keyNode, valNode, len, childs, tr, value,
             isEmpty = true,
             accum = [],
             type = getType(data);
 
-        var indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+        // Initialized & used only in case of objects & arrays
+        var hyperlinksEnabled, aTarget, hyperlinkKeys ;
 
         switch (type) {
         case BOOL:
@@ -141,20 +144,29 @@
             break;
         case OBJECT:
             childs = [];
+
+            aTarget =  options.hyperlinks.target;
+            hyperlinkKeys = options.hyperlinks.keys;
+
+            // Is Hyperlink Key
+            hyperlinksEnabled =
+                options.hyperlinks.enable &&
+                hyperlinkKeys &&
+                hyperlinkKeys.length > 0;
+
             for (key in data) {
                 isEmpty = false;
 
-                valNode = _format(data[key], options, key);
+                value = data[key];
+
+                valNode = _format(value, options, key);
                 keyNode = sn("th", OBJ_KEY_CLASS_NAME, key);
 
-                // Is Hyperlink Key
-                if( options.hyperlinks.enable &&
-                    options.hyperlinks.keys &&
-                    options.hyperlinks.keys.length > 0 &&
-                    typeof(data[key]) === 'string' &&
-                    indexOf.call(options.hyperlinks.keys, key) >= 0){
+                if( hyperlinksEnabled &&
+                    typeof(value) === 'string' &&
+                    indexOf.call(hyperlinkKeys, key) >= 0){
 
-                    valNode = scn("td", OBJ_VAL_CLASS_NAME, linkNode(valNode, data[key], options.hyperlinks.target));
+                    valNode = scn("td", OBJ_VAL_CLASS_NAME, linkNode(valNode, value, aTarget));
                 } else {
                     valNode = scn("td", OBJ_VAL_CLASS_NAME, valNode);
                 }
@@ -178,26 +190,32 @@
         case ARRAY:
             if (data.length > 0) {
                 childs = [];
+                var showArrayIndices = options.showArrayIndex;
+
+                aTarget =  options.hyperlinks.target;
+                hyperlinkKeys = options.hyperlinks.keys;
 
                 // Hyperlink of arrays?
-                var hyperlinks = parentKey && options.hyperlinks.enable &&
-                  options.hyperlinks.keys &&
-                  options.hyperlinks.keys.length > 0 &&
-                  indexOf.call(options.hyperlinks.keys, parentKey) >= 0;
+                hyperlinksEnabled = parentKey && options.hyperlinks.enable &&
+                    hyperlinkKeys &&
+                    hyperlinkKeys.length > 0 &&
+                    indexOf.call(hyperlinkKeys, parentKey) >= 0;
 
                 for (key = 0, len = data.length; key < len; key += 1) {
 
                     keyNode = sn("th", ARRAY_KEY_CLASS_NAME, key);
-                    if(hyperlinks && typeof(data[key]) === "string") {
-                        valNode = _format(data[key], options, key);
-                        valNode = scn("td", ARRAY_VAL_CLASS_NAME, linkNode(valNode, data[key], options.hyperlinks.target));
+                    value = data[key];
+
+                    if(hyperlinksEnabled && typeof(value) === "string") {
+                        valNode = _format(value, options, key);
+                        valNode = scn("td", ARRAY_VAL_CLASS_NAME, linkNode(valNode, value, aTarget));
                     } else {
-                        valNode = scn("td", ARRAY_VAL_CLASS_NAME, _format(data[key], options, key));
+                        valNode = scn("td", ARRAY_VAL_CLASS_NAME, _format(value, options, key));
                     }
 
                     tr = document.createElement("tr");
 
-                    if(options.showArrayIndex) {
+                    if(showArrayIndices) {
                         tr.appendChild(keyNode);
                     }
                     tr.appendChild(valNode);
@@ -241,7 +259,7 @@
 
 
     function validateArrayIndexOption(options) {
-        if(options['showArrayIndex'] === undefined){
+        if(options.showArrayIndex === undefined){
             options.showArrayIndex = true;
         } else {
             // Force to boolean just in case

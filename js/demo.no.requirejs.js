@@ -12,7 +12,7 @@
 
     function convert(input, output) {
         var node = JsonHuman.format(input, {
-            showArrayIndex: true,
+            showArrayIndex: false,
             hyperlinks : {
                 enable : true,
                 keys: ['url', 'main'],
