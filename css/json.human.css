@@ -1,10 +1,7 @@
-@import url(http://fonts.googleapis.com/css?family=Inconsolata);
-
 .jh-root, .jh-type-object, .jh-type-array, .jh-key, .jh-value, .jh-root tr{
  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
  box-sizing: border-box;         /* Opera/IE 8+ */
- font-family: 'Inconsolata' ;
  font-weight: bold;
 }
 
