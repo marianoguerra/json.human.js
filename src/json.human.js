@@ -71,7 +71,9 @@
         STRING_CLASS_NAME = p("type-string"),
         STRING_EMPTY_CLASS_NAME = p("type-string") + " " + p("empty"),
 
-        BOOL_CLASS_NAME = p("type-bool"),
+        BOOL_TRUE_CLASS_NAME = p("type-bool-true"),
+        BOOL_FALSE_CLASS_NAME = p("type-bool-false"),
+        BOOL_IMAGE = p("type-bool-image"),
         INT_CLASS_NAME = p("type-int") + " " + p("type-number"),
         FLOAT_CLASS_NAME = p("type-float") + " " + p("type-number"),
 
@@ -126,9 +128,28 @@
 
         switch (type) {
         case BOOL:
-            result = data ? sn("span", BOOL_CLASS_NAME, "true")
-                          : sn("span", BOOL_CLASS_NAME, "false");
+            var boolOpt = options.bool;
+            container = document.createElement('div');
+
+            if(boolOpt.showImage) {
+                var img = document.createElement('img');
+                img.setAttribute('class', BOOL_IMAGE);
+
+                img.setAttribute('src',
+                  '' + (data ? boolOpt.img.true : boolOpt.img.false));
+
+                container.appendChild(img);
+            }
+
+            if(boolOpt.showText){
+                container.appendChild(data ?
+                    sn("span", BOOL_TRUE_CLASS_NAME, boolOpt.text.true) :
+                    sn("span", BOOL_FALSE_CLASS_NAME, boolOpt.text.false));
+            }
+
+            result = container;
             break;
+
         case STRING:
             if (data === "") {
                 result = sn("span", STRING_EMPTY_CLASS_NAME, "(Empty Text)");
@@ -247,10 +268,10 @@
         return result;
     }
 
-
     function validateOptions(options){
         options = validateArrayIndexOption(options);
         options = validateHyperlinkOptions(options);
+        options = validateBoolOptions(options);
 
         // Add any more option validators here
 
@@ -289,6 +310,58 @@
         }
 
         options.hyperlinks = hyperlinks;
+
+        return options;
+    }
+
+    function validateBoolOptions(options){
+        if(!options.bool){
+            options.bool = {
+                text:  {
+                    true : "true",
+                    false : "false"
+                },
+                img : {
+                    true: "",
+                    false: ""
+                },
+                showImage : false,
+                showText : true
+            };
+        } else {
+            var boolOptions = options.bool;
+
+            // Show text if no option
+            if(!boolOptions.showText && !boolOptions.showImage){
+                boolOptions.showImage  =  false;
+                boolOptions.showText  =  true;
+            }
+
+            if(boolOptions.showText){
+                if(!boolOptions.text){
+                    boolOptions.text = {
+                        true : "true",
+                        false : "false"
+                    };
+                } else {
+                    var t = boolOptions.text.true, f = boolOptions.text.false;
+
+                    if(getType(t) != STRING || t === ''){
+                        boolOptions.text.true = 'true';
+                    }
+
+                    if(getType(f) != STRING || f === ''){
+                        boolOptions.text.false = 'false';
+                    }
+                }
+            }
+
+            if(boolOptions.showImage){
+                if(!boolOptions.img.true && !boolOptions.img.false){
+                    boolOptions.showImage = false;
+                }
+            }
+        }
 
         return options;
     }

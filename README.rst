@@ -55,6 +55,23 @@ Additional options parameter can be supplied
             enable : true,
             keys: ['url'],          // Keys which will be output as links
             target : '_blank'       // 'target' attribute of a
+        },
+
+        // Options for displaying bool
+        bool : {
+            // Show text? And what text for true & false?
+            showText : true,
+            text : {
+                true : "Yes",
+                false : "No"
+            },
+
+            // Show image? And which images (urls)?
+            showImage : true,
+            img : {
+                true : 'css/true.png',
+                false : 'css/false.png'
+            }
         }
     });
 
