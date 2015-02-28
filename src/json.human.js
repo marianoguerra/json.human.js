@@ -73,7 +73,7 @@
 
         BOOL_TRUE_CLASS_NAME = p("type-bool-true"),
         BOOL_FALSE_CLASS_NAME = p("type-bool-false"),
-        BOOL_IMAGEE = p("type-bool-image"),
+        BOOL_IMAGE = p("type-bool-image"),
         INT_CLASS_NAME = p("type-int") + " " + p("type-number"),
         FLOAT_CLASS_NAME = p("type-float") + " " + p("type-number"),
 
@@ -133,7 +133,7 @@
 
             if(boolOpt.showImage) {
                 var img = document.createElement('img');
-                img.setAttribute('class', BOOL_IMAGEE);
+                img.setAttribute('class', BOOL_IMAGE);
 
                 img.setAttribute('src',
                   '' + (data ? boolOpt.img.true : boolOpt.img.false));
