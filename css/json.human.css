@@ -1,27 +1,48 @@
+@import url(http://fonts.googleapis.com/css?family=Inconsolata);
+
 .jh-root, .jh-type-object, .jh-type-array, .jh-key, .jh-value, .jh-root tr{
  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
  box-sizing: border-box;         /* Opera/IE 8+ */
+ font-family: 'Inconsolata' ;
+ font-weight: bold;
 }
 
 .jh-key, .jh-value{
  margin: 0;
  padding: 0.2em;
+ font-weight: bold;
 }
 
 .jh-value{
     border-left: 1px solid #ddd;
 }
 
-.jh-type-bool, .jh-type-number{
-    font-weight: bold;
+.jh-type-number{
     text-align: center;
     color: #5286BC;
 }
 
+.jh-type-bool-true{
+    text-align: center;
+    color: #5A811C;
+}
+
+.jh-type-bool-false{
+    text-align: center;
+    color: #D45317;
+}
+
+.jh-type-bool-image {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    vertical-align: bottom;
+}
+
 .jh-type-string{
     font-style: italic;
-    color: #839B00;
+    color: #6E6E6E;
 }
 
 .jh-array-key{
@@ -86,7 +107,6 @@ th.jh-key{
 
 .jh-a span.jh-type-string {
     text-decoration: none;
-    font-weight: bold;
     color : #268ddd;
     font-style: normal;
 }

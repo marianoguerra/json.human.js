@@ -21,7 +21,7 @@
 
         <h2>How?</h2>
 
-        <p>you can see <a href="https://github.com/marianoguerra/json.human.js/blob/master/js/demo.js">js/demo.js</a> in the <a href="http://github.com/marianoguerra/json.human.js">repo</a> for an example, here is a short one</p>
+        <p>You can see <a href="https://github.com/marianoguerra/json.human.js/blob/master/js/demo.js">js/demo.js</a> in the <a href="http://github.com/marianoguerra/json.human.js">repo</a> for an example, here is a short one</p>
 
         <pre>
         var node = JsonHuman.format(input);
@@ -29,43 +29,116 @@
         </pre>
 
         <h2>Try it</h2>
-        <p>edit the JSON and click <em>Convert</em></p>
+        <p>Edit the JSON and click <em>Convert</em></p>
 
-        <h2>Input: JSON</h2>
 
-        <textarea id="input">{
-  "name": "json.human",
-  "description": "Convert\n JSON to human readable\r HTML",
-  "author": "Mariano Guerra <mariano@marianoguerra.org>",
-  "tags": ["DOM", "HTML", "JSON", "Pretty Print"],
-  "version": "0.1.0",
-  "main": "json.human.js",
-  "license" : "MIT",
-  "dependencies": {
-      "crel": "1.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/marianoguerra/json.human.js.git"
-  },
-  "bugs": {
-    "url": "http://github.com/marianoguerra/json.human.js/issues"
-  },
-  "contributors": [],
-  "config": {
-    "what?": "this object is just to show some extra stuff",
-    "how?": ["add json.human.js", "add json.human.css", "???", "profit!"],
-    "customization?": ["customize the css prefix", "change the css file"],
-    "integer": 42,
-    "float": 12.3,
-    "bool": true,
-    "emptyString": "",
-    "emptyArray": [],
-    "emptyObject": {},
-    "htmlEntities": "   <- trailing <em>   & </em> and some html   "
-  }
+
+        <table>
+            <tr>
+                <td><h2>Input: JSON</h2></td>
+                <td><h2>Input: Options</h2></td>
+            </tr>
+            <tr>
+                <td>
+<textarea id="input">{
+    "name": "json.human",
+    "description": "Convert\n JSON to human readable\r HTML",
+    "author": "Mariano Guerra <mariano@marianoguerra.org>",
+    "tags": ["DOM", "HTML", "JSON", "Pretty Print"],
+    "version": "0.1.0",
+    "main": "json.human.js",
+    "license" : "MIT",
+
+    "dependencies": {
+        "crel": "1.0.0"
+    },
+
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/marianoguerra/json.human.js.git"
+    },
+
+    "bugs": {
+        "url": "http://github.com/marianoguerra/json.human.js/issues"
+    },
+
+    "contributors": [
+        "https://github.com/marianoguerra",
+        "https://github.com/anaran",
+        "https://github.com/Esya",
+        "https://github.com/nickyout",
+        "https://github.com/aJanuary",
+        "https://github.com/VikramN"
+    ],
+
+    "config": {
+        "what?": "this object is just to show some extra stuff",
+        "how?": ["add json.human.js", "add json.human.css", "???", "profit!"],
+        "customization?": ["customize the css prefix", "change the css file"],
+        "integer": 42,
+        "float": 12.3,
+        "bool": true,
+        "bool2": false,
+        "emptyString": "",
+        "emptyArray": [],
+        "emptyObject": {},
+        "htmlEntities": "   <- trailing <em>   & </em> and some html   "
+    }
 }
-        </textarea>
+</textarea>
+                </td>
+                <td>
+                    <div style="padding-left: 5px; padding-top: 10px;">
+                        Show Array Indices : <input id="opt_show_array_index" type="checkbox" checked> <br />
+
+                        <div style="margin: 10px 0px; font-weight: bold">Hyperlinks</div><hr>
+                        <table>
+                            <tr>
+                                <td>Enable Hyperlinks</td>
+                                <td><input id="opt_enable_hyperlinks" type="checkbox" checked></td>
+                            </tr>
+                            <tr>
+                                <td> Keys </td>
+                                <td><input id="opt_hyper_keys" type="text" placeholder="Ex: url, main" value="url, contributors"></td>
+                            </tr>
+                            <tr>
+                                <td> Hyperlink Target </td>
+                                <td><input id="opt_hyper_target" type="text" placeholder="Ex: _blank" value="_blank"></td>
+                            </tr>
+                        </table>
+                        <div  style="margin: 10px 0px; font-weight: bold">Boolean Options</div><hr>
+                        <table>
+                            <tr>
+                                <td>Show Text ? </td>
+                                <td><input id="opt_bool_show_text" type="checkbox" checked></td>
+                            </tr>
+                            <tr>
+                                <td> Label for "true" </td>
+                                <td><input id="opt_bool_text_true" type="text" placeholder="Ex: Yes" value="Yes"></td>
+                            </tr>
+                            <tr>
+                                <td> Label for "false" </td>
+                                <td><input id="opt_bool_text_false" type="text" placeholder="Ex: No" value="No"></td>
+                            </tr>
+                            <tr>
+                                <td>Show Image ? </td>
+                                <td><input id="opt_bool_show_img" type="checkbox" checked></td>
+                            </tr>
+                            <tr>
+                                <td> Url for "true" </td>
+                                <td><input id="opt_bool_img_true" type="text" placeholder="Ex: css/true.png" value="css/true.png"></td>
+                            </tr>
+                            <tr>
+                                <td> Url for "false" </td>
+                                <td><input id="opt_bool_img_false" type="text" placeholder="Ex: css/false.png" value="css/false.png"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+
 
         <div class="buttons">
             <button id="convert">Convert</button>
@@ -88,6 +161,9 @@
         <ul>
             <li><a href="https://github.com/padolsey/prettyPrint.js">prettyprint.js</a></li>
         </ul>
+
+        <br />
+        <span>Boolean Icons by - <a href="https://www.iconfinder.com/iconsets/onebit">https://www.iconfinder.com/iconsets/onebit</a></span>
 
 
         <script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/3.16.0/codemirror.min.js"></script>
