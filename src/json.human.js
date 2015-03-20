@@ -202,7 +202,7 @@
             if (isEmpty) {
                 result = sn("span", OBJ_EMPTY_CLASS_NAME, "(Empty Object)");
             } else {
-                result = scn("table", OBJECT_CLASS_NAME, childs);
+                result = scn("table", OBJECT_CLASS_NAME, scn("tbody", '', childs));
             }
             break;
         case FUNCTION:
@@ -244,7 +244,7 @@
                     childs.push(tr);
                 }
 
-                result = scn("table", ARRAY_CLASS_NAME, childs);
+                result = scn("table", ARRAY_CLASS_NAME, scn("tbody", '', childs));
             } else {
                 result = sn("span", ARRAY_EMPTY_CLASS_NAME, "(Empty List)");
             }
