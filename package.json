@@ -1,6 +1,6 @@
 {
   "name": "json-human",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Convert JSON to human readable HTML",
   "main": "src/json.human.js",
   "scripts": {
@@ -23,6 +23,5 @@
   },
   "homepage": "https://github.com/marianoguerra/json.human.js",
   "dependencies": {
-    "jsdom": "^0.11.1"
   }
 }
