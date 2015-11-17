@@ -59,14 +59,15 @@
     var toString = Object.prototype.toString,
         prefixer = makePrefixer("jh"),
         p = prefixer,
-        ARRAY = 1,
-        BOOL = 2,
-        INT = 3,
-        FLOAT = 4,
-        STRING = 5,
-        OBJECT = 6,
-        FUNCTION = 7,
-        UNK = 99,
+        ARRAY = 2,
+        BOOL = 4,
+        INT = 8,
+        FLOAT = 16,
+        STRING = 32,
+        OBJECT = 64,
+        SPECIAL_OBJECT = 128,
+        FUNCTION = 256,
+        UNK = 1,
 
         STRING_CLASS_NAME = p("type-string"),
         STRING_EMPTY_CLASS_NAME = p("type-string") + " " + p("empty"),
@@ -109,7 +110,10 @@
             if (isArray(obj)) {
                 return ARRAY;
             } else if (obj === Object(obj)) {
-                return OBJECT;
+                if (obj.constructor === Object) {
+                    return OBJECT;
+                }
+                return OBJECT | SPECIAL_OBJECT
             } else {
                 return UNK;
             }
@@ -120,50 +124,49 @@
 
         var result, container, key, keyNode, valNode, len, childs, tr, value,
             isEmpty = true,
+            isSpecial = false,
             accum = [],
             type = getType(data);
 
         // Initialized & used only in case of objects & arrays
         var hyperlinksEnabled, aTarget, hyperlinkKeys ;
 
-        switch (type) {
-        case BOOL:
+        if (type === BOOL) {
             var boolOpt = options.bool;
             container = document.createElement('div');
 
-            if(boolOpt.showImage) {
+            if (boolOpt.showImage) {
                 var img = document.createElement('img');
                 img.setAttribute('class', BOOL_IMAGE);
 
                 img.setAttribute('src',
-                  '' + (data ? boolOpt.img.true : boolOpt.img.false));
+                    '' + (data ? boolOpt.img.true : boolOpt.img.false));
 
                 container.appendChild(img);
             }
 
-            if(boolOpt.showText){
+            if (boolOpt.showText) {
                 container.appendChild(data ?
                     sn("span", BOOL_TRUE_CLASS_NAME, boolOpt.text.true) :
                     sn("span", BOOL_FALSE_CLASS_NAME, boolOpt.text.false));
             }
 
             result = container;
-            break;
 
-        case STRING:
+        } else if (type === STRING) {
             if (data === "") {
                 result = sn("span", STRING_EMPTY_CLASS_NAME, "(Empty Text)");
             } else {
                 result = sn("span", STRING_CLASS_NAME, data);
             }
-            break;
-        case INT:
+        } else if (type === INT) {
             result = sn("span", INT_CLASS_NAME, data);
-            break;
-        case FLOAT:
+        } else if (type === FLOAT) {
             result = sn("span", FLOAT_CLASS_NAME, data);
-            break;
-        case OBJECT:
+        } else if (type & OBJECT) {
+            if (type & SPECIAL_OBJECT) {
+                isSpecial = true;
+            }
             childs = [];
 
             aTarget =  options.hyperlinks.target;
@@ -199,21 +202,21 @@
                 childs.push(tr);
             }
 
-            if (isEmpty) {
+            if (isSpecial) {
+                result = sn('span', STRING_CLASS_NAME, data.toString())
+            } else if (isEmpty) {
                 result = sn("span", OBJ_EMPTY_CLASS_NAME, "(Empty Object)");
             } else {
                 result = scn("table", OBJECT_CLASS_NAME, scn("tbody", '', childs));
             }
-            break;
-        case FUNCTION:
+        } else if (type === FUNCTION) {
             result = sn("span", FUNCTION_CLASS_NAME, data);
-            break;
-        case ARRAY:
+        } else if (type === ARRAY) {
             if (data.length > 0) {
                 childs = [];
                 var showArrayIndices = options.showArrayIndex;
 
-                aTarget =  options.hyperlinks.target;
+                aTarget = options.hyperlinks.target;
                 hyperlinkKeys = options.hyperlinks.keys;
 
                 // Hyperlink of arrays?
@@ -227,16 +230,18 @@
                     keyNode = sn("th", ARRAY_KEY_CLASS_NAME, key);
                     value = data[key];
 
-                    if(hyperlinksEnabled && typeof(value) === "string") {
+                    if (hyperlinksEnabled && typeof(value) === "string") {
                         valNode = _format(value, options, key);
-                        valNode = scn("td", ARRAY_VAL_CLASS_NAME, linkNode(valNode, value, aTarget));
+                        valNode = scn("td", ARRAY_VAL_CLASS_NAME,
+                            linkNode(valNode, value, aTarget));
                     } else {
-                        valNode = scn("td", ARRAY_VAL_CLASS_NAME, _format(value, options, key));
+                        valNode = scn("td", ARRAY_VAL_CLASS_NAME,
+                            _format(value, options, key));
                     }
 
                     tr = document.createElement("tr");
 
-                    if(showArrayIndices) {
+                    if (showArrayIndices) {
                         tr.appendChild(keyNode);
                     }
                     tr.appendChild(valNode);
@@ -248,10 +253,8 @@
             } else {
                 result = sn("span", ARRAY_EMPTY_CLASS_NAME, "(Empty List)");
             }
-            break;
-        default:
+        } else {
             result = sn("span", UNKNOWN_CLASS_NAME, data);
-            break;
         }
 
         return result;
